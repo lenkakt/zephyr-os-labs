@@ -7,7 +7,7 @@ Each lab shall last approx. 90 minutes, including the short topic introduction.
 
 The practical labs cover the following topics:
 
-1. *Hallo* - Introduction to the development environment - *Hello world*
+1. *Hello* - Introduction to the development environment - *Hello world*
 2. *Kernel* - Kernel and KConfig
 3. *SysCalls* - System calls
 3. *Threads* - Creating and working with threads
