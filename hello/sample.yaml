@@ -1,0 +1,7 @@
+sample:
+  name: hello
+  description: Hello from kernel, a trivial example for the first Zephyr OS lab.
+tests:
+  sample.hello:
+    tags: kernel
+    build-only: true
