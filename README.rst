@@ -20,6 +20,11 @@ The practical labs cover the following topics:
 #. *Filesystems* - Working with file systems 
 #. *Security*
 
+---------------
+Target audience
+---------------
+Our primary target audience is students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++. 
+We have Linux computers in the labs, so we do not describe command variations and settings in Windows.
 
 **Maintainer**: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
 The course outline is based on my teaching at Technical University of Liberec. 
