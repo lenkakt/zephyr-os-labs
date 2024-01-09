@@ -11,9 +11,9 @@ The Lab is splitted into 2 main Tasks:
 1. TASK1 will guide you through the installation process to get all the tools working and configured properly for the labs.
 2. TASK2 demonstrates how you can add your application to the Zephyr. 
 
-=====================================
+============================================
 TASK1: Install Zephyr and get it all working
-=====================================
+============================================
 ------------------------------
 Get the Zephyr sources and SDK
 ------------------------------
@@ -30,13 +30,13 @@ West tool
 Read at least the `basic description <https://docs.zephyrproject.org/latest/develop/west/basics.html>`_ to understand, what the West meta-tool is. 
 This documentation explains you the structure of the folders and files and it is very helpful at the beginning.
 
-=======================
+==============================
 TASK2: Hello world application
-=======================
+==============================
 #. Read about Zephyr applications and its files and folders - <https://docs.zephyrproject.org/latest/develop/application/index.html>.
 #. You do not have to create a new application, here in this folder is everything ready (done by hand - the source is in the ./src directory).
 #. Make sure your virtual environment is ready: :code:`source ~/zephyrproject/.venv/bin/activate`
-#. Compile the application for the qemu_x86 machine using following command: :code:`zephyr-os-labs$ west build -p always -b qemu_x86 hello/ -t run`
+#. Compile the application for the qemu_x86 machine using following command: :code:`zephyr-os-labs$ west build -b qemu_x86 hello/ -t run`. 
 #. Command builds the code and starts the qemu emulator in the terminal. You shall see the output. You can stop the qemu by Ctrl+C. 
 
 You shall see following output in the terminal.
@@ -54,6 +54,17 @@ If you want, you can repeat it for the other machine (qemu_m0) - just call the b
 similar to what you have seen at first. 
 
 The different machine has different RAM, ROM and Flash layout. In the qemu output, you can notice that the memory layout reported by the emulator is different.
+
+---------------
+Troubleshooting
+---------------
+
+If you are switching the boards and you get some errors during the build, you may force the west to create the build directory from scratch by adding a parameter:
+
+.. code-block:: shell
+
+    west build -p always -b qemu_x86 hello/ -t run
+
 
 ----------------------------------
 Walk through the files and folders
