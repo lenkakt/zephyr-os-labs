@@ -6,15 +6,13 @@ Hello world from Zephyr!
 Hello Lab goals:
 =================
 
-1. Get familier with all the Zephyr environment and tools.
-2. Get it ready and working on your computer.
-3. Compile your Hello world.
-4. Run it in the emulation.
-5. Get familier with the files and folders.
-6. Understand the configuration
+The Lab is splitted into 2 main Tasks:
+
+1. TASK1 will guide you through the installation process to get all the tools working and configured properly for the labs.
+2. TASK2 demonstrates how you can add your application to the Zephyr. 
 
 =====================================
-Install Zephyr and get it all working
+TASK1: Install Zephyr and get it all working
 =====================================
 ------------------------------
 Get the Zephyr sources and SDK
@@ -33,7 +31,7 @@ Read at least the `basic description <https://docs.zephyrproject.org/latest/deve
 This documentation explains you the structure of the folders and files and it is very helpful at the beginning.
 
 =======================
-Hello world application
+TASK2: Hello world application
 =======================
 #. Read about Zephyr applications and its files and folders - <https://docs.zephyrproject.org/latest/develop/application/index.html>.
 #. You do not have to create a new application, here in this folder is everything ready (done by hand - the source is in the ./src directory).
@@ -65,11 +63,6 @@ Walk through the files and folders
 * File `./prj.conf` is dedicated to Zephyr configuration. No config options here yet available.
 * File `README.rst` is this document.
 * File `sample.yaml` contains the sample definition and links to tests and the Twister tool.
-
-===============================
-Understanding the configuration
-===============================
-
 
 
 
