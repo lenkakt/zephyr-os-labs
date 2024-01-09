@@ -8,7 +8,7 @@ Each lab takes approx. 90 minutes. The lecture should start with a short introdu
 The practical labs cover the following topics:
 
 #. `Hello <hello/>`_ - Installing and setting up all the environment
-#. `Config <config/>` _ - KConfig and all the other configurations and parameters in Zephyr
+#. `Config <config/>`_ - KConfig and all the other configurations and parameters in Zephyr
 #. *Kernel* - Kernel 
 #. *SysCalls* - System calls
 #. *Threads* - Creating and working with threads
