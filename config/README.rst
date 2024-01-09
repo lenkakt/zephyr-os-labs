@@ -100,10 +100,51 @@ To start the guiconfig use: :code:`west build -b qemu_x86 -t menuconfig`
 5. Test what has a higher priority: what will be used if you now set a different banner in the prj.conf file than in the menu?
 
 
-=====================================
-TASK2: Compilation and CMakeLists.txt
-=====================================
+============================================================================
+TASK2: Compilation, Configuration, build system variables and CMakeLists.txt
+============================================================================
 
+The system configuration and compilation process is orchestrated by the CMake.
+The general description is given in the Zephyr documentation here: <https://docs.zephyrproject.org/latest/build/cmake/index.html>
+
+The entry point for CMake is the applications's CMakeLists.txt file, stored in the application's main directory.
+
+The initial CMakeLists.txt for this task contains only the application's basic template, specifying the application's name, referencing the source code, and adding the basic OS package - zephyr.
+
+You can also set environment variables here or some configuration options - such as the target board and similar.
+
+----------------
+Before you start
+----------------
+
+Browse the documentation for the CMake, the CMakeListst.txt part: <https://cmake.org/cmake/help/book/mastering-cmake/chapter/Writing%20CMakeLists%20Files.html>
+Browse the list of build system variables given in the Zephyr documentation: <https://docs.zephyrproject.org/latest/develop/application/index.html#important-build-vars>
+
+-----------------------------------------------
+TASK2.1: Build system variables in command line
+-----------------------------------------------
+
+When compiling using the :code:`west build` command, you can specify and build variable using the *-D* command option at the end of the west command line.
+To set the board not using the *-b* option but by setting the build variable BOARD, use the command:
+
+.. code-block:: shell
+
+    west build -p always config/ -t run -DBOARD=qemu_cortex_m0
+
+The *-p always* is used to force the build system to update all the files and configuration to get the outputs for the cortex_m0 - the .config generated in previous examples contains the setting for the qemu_x86 and your input would be ignored.
+
+--------------------------------
+TASK2.2: The CMakeLists.txt file
+--------------------------------
+
+To set a value to a variable, use the cmake *set* command: :code: set(BOARD qemu_x86)
+
+#. Set the board in the CMakeLists.txt
+#. Try to provide a different board from command line. As you see, the settings from command line have the highest priority and overwrite the configuration given in CMakeLists.txt.
+#. Try to set other variables.
+#. Try to split the prj.conf file into several files and set up properly in the CMakeLists.txt (This will be usefull: https://docs.zephyrproject.org/latest/develop/application/index.html#application-cmakelists-txt)
+
+Not working? Try to use the task2_2.CMakeLists.txt and the prj files from the soulutions directory.
 
 
 ============================

@@ -4,3 +4,4 @@ find_package(Zephyr)
 project(config)
 
 target_sources(app PRIVATE src/main.c)
+

@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.20.0)
+
+#If the target board is defined here, you do not need to provide the -b option.
+set(BOARD qemu_x86)
+
+#Add the configuration options in several files:
+set(CONF_FILE "task2_1_A.conf")
+list(APPEND CONF_FILE "task2_1_B.conf")
+
+find_package(Zephyr)
+project(config)
+
+target_sources(app PRIVATE src/main.c)
+
