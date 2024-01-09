@@ -151,3 +151,20 @@ Not working? Try to use the task2_2.CMakeLists.txt and the prj files from the so
 TASK3: Environment variables
 ============================
 
+Several environment variables also affect the build of Zephyr and applications - you can find a list of them here: <https://docs.zephyrproject.org/latest/develop/env_vars.html>.
+
+Work with them like with the other environment variables. 
+Most of them have the same meaning as the build variables described in the previous section.
+
+A few of them you can use to point to your filesystem if you have more than just one version of the SDK installed or are using a different toolchain. 
+
+We mention them in this task mainly to point out that the environment settings affect the compilation and build of applications.
+
+In the task, try setting up a target board using the BOARD variable (in Task2.2 we switched the board to x86, so let's go back to m0 again:):
+
+.. code-block: shell
+
+    export BOARD=qemu_cortex_m0
+    west build -p always config/ -t run 
+
+Note: the -p always here is essential, you need to rebuild everything because you have changed the target board.
