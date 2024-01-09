@@ -23,6 +23,7 @@ The practical labs cover the following topics:
 -------------
 Target boards
 -------------
+The first release is created for the qemu_x86 and qemu_cortex_m0. Later on, the examples for the Hardwario Chester platform, which is used in our labs, shall be added.
 
 ---------------
 Target audience
