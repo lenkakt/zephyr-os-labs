@@ -21,17 +21,11 @@ This exercise focuses on KConfig (TASK1), CMakeLists.txt (TASK2), and environmen
 TASK1: prj.conf and KConfig
 ===========================
 
-Main goal: To understand how the configuration works, to play with the menu config, to learn how to create the prj.conf
+Main goal: To understand how the system configuration works, KConfig and the proper way to set your OS configuration.
+
+The configuration options are macros used in the source code. However, they are not defined here - the generating header file is composed only during compilation from the configuration files. It is called autoconf.h and can be found after successful compilation in zephyr-os-labs/zephyr/build/zephyr/include/generated/autoconf.h
 
 The good point to start is always the documentation, so read the initial description at <https://docs.zephyrproject.org/latest/build/kconfig/index.html>.
-
-In all parts of this task, we will work with these options: 
-
-#. CONFIG_BOOT_DELAY <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_DELAY.html#std-kconfig-CONFIG_BOOT_DELAY>
-
-#. CONFIG_BOOT_BANNER <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>
-
-#. CONFIG_BOOT_BANNER_STRING 
 
 ----------------
 Before you start
@@ -44,11 +38,26 @@ Do not forget to activate the environment to get the West working properly.
     cd zephyr-os-labs
     source .venv/bin/activate
 
-Read the documentation for the selected configuration options to understand how to set it properly.
+Build the example as it is to be sure it is working:
+
+.. code-block:: shell
+
+    west build -t qemu_x86 -t run
+
+We will play with these options: 
+
+#. CONFIG_BOOT_DELAY <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_DELAY.html#std-kconfig-CONFIG_BOOT_DELAY>
+
+#. CONFIG_BOOT_BANNER <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>
+
+#. CONFIG_BOOT_BANNER_STRING 
+
+A good idea is to read the documentation related to these options.
 
 -----------------
 TASK1.1: prj.conf
 -----------------
+
 You can manually write the options into prj.conf.
 In the first line, you see the CONFIG_BOOT_DELAY. To get it working, delete the # sign.
 Try to set up correctly the boot message - see the options documentation linked in TASK1 description.
@@ -64,12 +73,31 @@ Now is a perfect time to write any nonsense to prj.conf to find out what will ha
 
 No success? Try the file solutions/task1_1.prj.conf. 
 
-------------------------------
-TASK1.2: menuconfig, guiconfig
-------------------------------
+------------------------------------------
+TASK1.2: menuconfig, guiconfig and KConfig
+------------------------------------------
 
-The menuconfig: :code: `west build -b qemu_x86 -t menuconfig`
-The guiconfig: :code: `west build -b qemu_x86 -t menuconfig`
+There are many configuration options, and they depend on each other. Writing a configuration from scratch in a file and considering all the dependencies is challenging; no one asks you to do it!
+
+The right way is to use ready-made tools that group the options into graphical menus. You have two options: if a GUI is available during development, you can use the GUI tool (guiconfig) or the text menus available on the command line (menuconfig).
+
+We use the KConfig language to set up the menu's structure. You can find KConfig files in the sources defining the menu structure and options description—the online documentation generated from these files (e.g. here: <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>). 
+All the options used in this lab are described in the zephyr-os-labs/zephyr/kernel/KConfig file.
+
+
+1. Comment out your settings in prj.conf.
+
+2. Start one of the interfaces and set your menu options. Save them. The entire configuration is now saved in zephyr-os-labs/build/zephyr/config.
+
+To start the menuconfig use: :code:`west build -b qemu_x86 -t menuconfig`
+
+To start the guiconfig use: :code:`west build -b qemu_x86 -t menuconfig`
+
+3. When you finish the settings, save your changes and quit the menu.
+
+4. Recompile the whole project and start it up again.
+
+5. Test what has a higher priority: what will be used if you now set a different banner in the prj.conf file than in the menu?
 
 
 =====================================
