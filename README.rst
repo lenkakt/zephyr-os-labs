@@ -9,7 +9,7 @@ The practical labs cover the following topics:
 
 #. `Hello <hello/>`_ - Installing and setting up all the environment
 #. `Config <config/>`_ - KConfig and all the other configurations and parameters in Zephyr
-#. *Kernel* - Kernel 
+#. `Kernel <kernel_lab/>`_ - Kernel configuration, working with kernel API
 #. *SysCalls* - System calls
 #. *Threads* - Creating and working with threads
 #. *Interrupts* - Working with interrupts
