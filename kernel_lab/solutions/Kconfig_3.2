@@ -1,0 +1,11 @@
+# This is the kernel lab 3.2 Kconfig file
+menu "ZEPHYR-OS-LABS"
+
+config KL_TIMER_SEC
+    int "Kernel timer in secs"
+    default 1
+    help
+      Set the timer interval in seconds.
+
+endmenu
+source "Kconfig.zephyr"

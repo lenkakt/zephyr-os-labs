@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2012-2014 Wind River Systems, Inc.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <stdio.h>
+#include <zephyr/kernel.h>
+
+
+int main(void)
+{
+	printf("The timer application is not working - you must add your code. Stop this emulation by Ctrl+A+X.\n");
+	/* This file is waiting for your timer */
+
+	return 0;
+}

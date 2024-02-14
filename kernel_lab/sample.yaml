@@ -1,0 +1,7 @@
+sample:
+  name: kernel-lab
+  description: A lab dedicated to demonstrate the kernel features.
+tests:
+  sample.hello:
+    tags: kernel
+    build-only: true
