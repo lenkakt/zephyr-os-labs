@@ -1,0 +1,7 @@
+sample:
+  name: threads
+  description: Lab demonstrating working with threads
+tests:
+  sample.app_directory:
+    tags: kernel
+    build-only: true
