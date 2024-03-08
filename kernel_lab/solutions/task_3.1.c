@@ -31,8 +31,7 @@ K_TIMER_DEFINE(kl_timer, kl_timer_handler, NULL);
 
 int main(void)
 {
-	printf("The timer application is starting. If you want to stop it, use Ctrl+A+X.\n");
-	
+	printf("The timer application is starting. If you want to stop it, use Ctrl+A+X.\n");	
 	k_timer_start(&kl_timer, K_SECONDS(KL_TIMER_SEC), K_SECONDS(KL_TIMER_SEC));
 	return 0;
 }

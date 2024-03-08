@@ -26,7 +26,7 @@ Before you start
 
 .. code-block:: shell
 
-    west build -b qemu_x86 -t run ./zephyr-lab
+    west build -b qemu_cortex_m0 -t run ./kernel-lab
 
 ==========================
 TASK1: The Build directory
