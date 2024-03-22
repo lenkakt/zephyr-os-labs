@@ -40,3 +40,6 @@ void tl_entry_point(k_timeout_t* tl_sleep, const char tl_message[]) {
 
 	K_THREAD_DEFINE(tl1_tid, TL_STACK_SIZE, tl_entry_point, &tl1_sleep, tl1_message, NULL, TL_PRIORITY, 0, 0);
 	K_THREAD_DEFINE(tl2_tid, TL_STACK_SIZE, tl_entry_point, &tl2_sleep, tl2_message, NULL, TL_PRIORITY, 0, 0);
+
+
+
