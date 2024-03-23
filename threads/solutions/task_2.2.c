@@ -24,6 +24,7 @@ struct k_thread kernelspace_thread;
 
 void userspace_thread_fcn(void *p1, void *p2, void *p3) {
 	printf("Userspace: Hello!\n");
+    __ASSERT(k_is_user_context(), "User mode is not available on this board!");
 }
 
 void kernelspace_thread_fcn(void *p1, void *p2, void *p3) {
