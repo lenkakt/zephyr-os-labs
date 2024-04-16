@@ -27,7 +27,27 @@ The first release is tested on qemu_x86 and qemu_cortex_m0 and qemu_cortex_rt (u
 Target audience
 ---------------
 Our primary target audience are students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++. 
-We have Linux computers in the labs, so we do not describe command variations and settings in Windows. The labs are tested and proved to work on WSL in Windows.
+
+----------------------
+Host operating systems
+----------------------
+All the labs were tested on Linux (Ubuntu 22.04 LTS) and in WSL (Windows Subsystem for Linux) on Windows 10. The labs should work on other Linux distributions as well.
+
+------------------
+How to do the labs
+------------------
+Each lab has its own directory. The lab directory contains a README file with the lab description and a solution directory containing the solution to the given lab. The lab directory also contains a Makefile that can be used to build the lab.
+
+------------------------
+How to use the solutions
+------------------------
+Each lab contains a "solutions" directory with the solution to the given lab. 
+The solution can be a proposed main.c or a configuration file or both.
+
+The filenames are using following patterns:
+- Kconfig_X.Y - the configuration file for the given task. It shall be renamed to Kconfig and moved to the lab directory.
+- task_X.Y.c - the main file for the given task. It shall be renamed to main.c and moved to the lab directory.
+- prj_X.Y.conf - the project configuration file for the given task. It shall be renamed to prj.conf and moved to the lab directory.
 
 **Maintainer**: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
 The course outline is based on my teaching at Technical University of Liberec. 
