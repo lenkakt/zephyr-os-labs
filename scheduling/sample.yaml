@@ -1,0 +1,7 @@
+sample:
+  name: scheduling
+  description: Void "Hello world" just to keep the essential files and folders.
+tests:
+  sample.app_directory:
+    tags: kernel
+    build-only: true
