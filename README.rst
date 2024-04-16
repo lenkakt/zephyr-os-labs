@@ -45,8 +45,11 @@ Each lab contains a "solutions" directory with the solution to the given lab.
 The solution can be a proposed main.c or a configuration file or both.
 
 The filenames are using following patterns:
+
 - Kconfig_X.Y - the configuration file for the given task. It shall be renamed to Kconfig and moved to the lab directory.
+
 - task_X.Y.c - the main file for the given task. It shall be renamed to main.c and moved to the lab directory.
+
 - prj_X.Y.conf - the project configuration file for the given task. It shall be renamed to prj.conf and moved to the lab directory.
 
 **Maintainer**: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
