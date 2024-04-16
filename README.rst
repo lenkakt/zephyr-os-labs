@@ -10,9 +10,9 @@ The practical labs cover the following topics:
 #. `Hello <hello/>`_ - Installing and setting up all the environment
 #. `Config <config/>`_ - KConfig and all the other configurations and parameters in Zephyr
 #. `Kernel <kernel_lab/>`_ - Kernel configuration, working with kernel API
-#. `Threads <threads/>` - Working with threads
-#. `Scheduling <scheduling/>` - Working with scheduler - types of job scheduling, performance measurement
-#. *Synchro* - Job synchronization - locks, semaphores, atomic operations
+#. `Threads <threads/>`_ - Working with threads
+#. `Scheduling <scheduling/>`_ - Working with scheduler - types of job scheduling, performance measurement
+#. `Synchro <synchro/>`_ - Job synchronization - locks, semaphores, atomic operations
 #. *Memory* - Memory management, assignment and protection
 #. *DeviceTree* - Device management - device trees, modifying them, device controller
 #. *Filesystems* - Working with file systems 
