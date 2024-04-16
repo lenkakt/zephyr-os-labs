@@ -13,9 +13,9 @@ The practical labs cover the following topics:
 #. `Threads <threads/>`_ - Working with threads
 #. `Scheduling <scheduling/>`_ - Working with scheduler - types of job scheduling, performance measurement
 #. `Synchro <synchro/>`_ - Job synchronization - locks, semaphores, atomic operations
-#. *Memory* - Memory management, assignment and protection
-#. *DeviceTree* - Device management - device trees, modifying them, device controller
-#. *Filesystems* - Working with file systems 
+#. `Memory <memory/>` - Memory management, assignment and protection
+#. `Devices <devices/>` - Device management - device trees, modifying them, device controller
+#. `Filesystems <filesystems/>` - Working with file systems. 
 
 
 -------------
@@ -26,7 +26,7 @@ The first release is tested on qemu_x86 and qemu_cortex_m0 and qemu_cortex_rt (u
 ---------------
 Target audience
 ---------------
-Our primary target audience is students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++. 
+Our primary target audience are students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++. 
 We have Linux computers in the labs, so we do not describe command variations and settings in Windows.
 
 **Maintainer**: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
