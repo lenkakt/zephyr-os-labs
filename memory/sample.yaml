@@ -1,7 +1,7 @@
 sample:
-  name: app_directory
-  description: Void "Hello world" just to keep the essential files and folders.
+  name: memory
+  description: The memory lab.
 tests:
-  sample.app_directory:
+  sample.memory:
     tags: kernel
     build-only: true
