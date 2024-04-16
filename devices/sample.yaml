@@ -1,0 +1,7 @@
+sample:
+  name: devices
+  description: The lab demonstrating device trees and device drivers.
+tests:
+  sample.devices:
+    tags: kernel
+    build-only: true
