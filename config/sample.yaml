@@ -1,6 +1,6 @@
 sample:
   name: config
-  description: Hello from kernel, a trivial example used to demonstrate the configuration options.
+  description: Hello from kernel, a trivial example used to demonstrate the configuration options
 tests:
   sample.hello:
     tags: kernel
