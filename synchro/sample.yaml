@@ -1,0 +1,7 @@
+sample:
+  name: synchro
+  description: A lab dedicated to locks and other synchronization.
+tests:
+  sample.synchro:
+    tags: kernel
+    build-only: true
