@@ -1,0 +1,7 @@
+sample:
+  name: filesystems
+  description: Filesystems in Zephyr.
+tests:
+  sample.filesystems:
+    tags: kernel
+    build-only: true
