@@ -10,10 +10,10 @@ The practical labs cover the following topics:
 #. `Hello <hello/>`_ - Installing and setting up all the environment
 #. `Config <config/>`_ - KConfig and all the other configurations and parameters in Zephyr
 #. `Kernel <kernel_lab/>`_ - Kernel configuration, working with kernel API
+#. `Threads <threads>`_- Creating and working with threads
+#. `Scheduling <scheduling>`_ - Working with scheduler - types of job scheduling, performance measurement
 #. *SysCalls* - System calls
-#. *Threads* - Creating and working with threads
 #. *Interrupts* - Working with interrupts
-#. *Scheduling* - Working with scheduler - types of job scheduling, performance measurement
 #. *Synchro* - Job synchronization - locks, semaphores, atomic operations
 #. *Memory* - Memory management, assignment and protection
 #. *DeviceTree* - Device management - device trees, modifying them, device controller
@@ -23,7 +23,7 @@ The practical labs cover the following topics:
 -------------
 Target boards
 -------------
-The first release is created for the qemu_x86 and qemu_cortex_m0. Later on, the examples for the Hardwario Chester platform, which is used in our labs, shall be added.
+The first release is tested on qemu_x86 and qemu_cortex_m0 and qemu_cortex_rt (user-space). Later on, the examples for the Hardwario Chester platform, which is used in our labs, shall be added.
 
 ---------------
 Target audience
