@@ -13,9 +13,9 @@ The practical labs cover the following topics:
 #. `Threads <threads/>`_ - Working with threads
 #. `Scheduling <scheduling/>`_ - Working with scheduler - types of job scheduling, performance measurement
 #. `Synchro <synchro/>`_ - Job synchronization - locks, semaphores, atomic operations
-#. `Memory <memory/>` - Memory management, assignment and protection
-#. `Devices <devices/>` - Device management - device trees, modifying them, device controller
-#. `Filesystems <filesystems/>` - Working with file systems. 
+#. `Memory <memory/>`_ - Memory management, assignment and protection
+#. `Devices <devices/>`_ - Device management - device trees, modifying them, device controller
+#. `Filesystems <filesystems/>`_ - Working with file systems. 
 
 
 -------------
