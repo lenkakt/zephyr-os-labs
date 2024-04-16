@@ -27,7 +27,7 @@ The first release is tested on qemu_x86 and qemu_cortex_m0 and qemu_cortex_rt (u
 Target audience
 ---------------
 Our primary target audience are students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++. 
-We have Linux computers in the labs, so we do not describe command variations and settings in Windows.
+We have Linux computers in the labs, so we do not describe command variations and settings in Windows. The labs are tested and proved to work on WSL in Windows.
 
 **Maintainer**: Lenka Kosková Třísková, lenka.koskova.triskova@tul.cz
 The course outline is based on my teaching at Technical University of Liberec. 
