@@ -110,8 +110,7 @@ void init_cars() {
 	}
 }
 
-void start_cars(){
-	init_cars();
+void start_cars(){	
 	for (int i=0; i < NR_OF_CARS; i++) {
 		k_thread_start(&car_threads[i]);
 		printf("Car %d thread started.\n", i);
