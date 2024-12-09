@@ -23,4 +23,19 @@ Before you start
 
     west build -p always -b qemu_cortex_m0 -t run ./memory
 
+===============================
+TASK1: Simple memory allocation 
+===============================
+
+Memory in Zephyr is managed by the kernel. The kernel provides a set of APIs to allocate and free memory.
+This task focuses to simple heaps memory allocation and deallocation.
+
+1. Go through the documentation: https://docs.zephyrproject.org/latest/kernel/memory_management/heap.html
+2. Write a simple code that allocates memory using k_malloc() and frees it using k_free(). 
+3. Run the code on the board and check the memory allocation and deallocation.
+4. Do some experiments: switch off freeing the memory - what happends? Try to allocate more than available - what happends?
+   
+
+
+
 
