@@ -33,7 +33,7 @@ void mem_entry_point() {
     #endif
   }
   //Wait for a while just to have time to read the messages
-  k_sleep(K_MSEC(1000));
+  k_sleep(K_MSEC(MEM_WAIT_TIME));
   }
  }
 
