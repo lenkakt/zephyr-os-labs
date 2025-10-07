@@ -137,7 +137,12 @@ If you see errors at the command line, the build system is confused as you proba
 return to the default confiburation by calling:
 
 .. code-block:: shell
+
     west config build.dir-fmt default
+
+
+And now it shall work OK. 
+
 
 --------------------------------
 TASK2.2: The CMakeLists.txt file
