@@ -129,7 +129,7 @@ To set the board not using the *-b* option but by setting the build variable BOA
 
 .. code-block:: shell
 
-    west build -p always config/ -t run -DBOARD=qemu_cortex_m0
+    west build -p always config/ -t run -- -DBOARD=qemu_cortex_m0
 
 The *-p always* is used to force the build system to update all the files and configuration to get the outputs for the cortex_m0 - the .config generated in previous examples contains the setting for the qemu_x86 and your input would be ignored.
 
