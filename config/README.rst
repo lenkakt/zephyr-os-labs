@@ -133,6 +133,12 @@ To set the board not using the *-b* option but by setting the build variable BOA
 
 The *-p always* is used to force the build system to update all the files and configuration to get the outputs for the cortex_m0 - the .config generated in previous examples contains the setting for the qemu_x86 and your input would be ignored.
 
+If you see errors at the command line, the build system is confused as you probably redefined the configuration several times. In this case,
+return to the default confiburation by calling:
+
+.. code-block:: shell
+    west config build.dir-fmt default
+
 --------------------------------
 TASK2.2: The CMakeLists.txt file
 --------------------------------
