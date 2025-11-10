@@ -4,3 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include <stdio.h>
+#include <zephyr/kernel.h>
+
+int main(void)
+{
+    printf("Booting Zephyr!\n");
+    printf("Creating threads and mutexes\n");
+
+
+    return 0;
+}

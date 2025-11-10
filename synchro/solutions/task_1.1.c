@@ -26,19 +26,20 @@ uint32_t t2_sleep = SLEEP_TIME2;
 void lab_thread(void *thread_nr, uint32_t *sleep_time, void *unused)
 {
     uint32_t thread_id = (uint32_t)thread_nr;    	
+    int mutex_status;
 
     while (1) {
 		printf("This is thread nr. %d, Trying to get the mutex.\n", thread_id);
-        if (k_mutex_lock(&lab_mutex, K_FOREVER) == 0) {
+        mutex_status = k_mutex_lock(&lab_mutex, K_FOREVER);
+        if (mutex_status == 0) {
             printf("This is thread nr. %d, Mutex is mine now.\n", thread_id);
-			k_sleep(K_MSEC(*sleep_time));
-            k_mutex_unlock(&lab_mutex);
-			printf("This is thread nr. %d, Mutex just released.\n", thread_id);
-        } else {
+        }
+        else {
             printf("This is thread nr. %d, Mutex is busy\n", thread_id);
-        }        
-    }
+        }
+        
 	k_sleep(K_MSEC(MUTEX_WAIT_TIME));
+}
 }
 
 
