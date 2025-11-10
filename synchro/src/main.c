@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <zephyr/kernel.h>
 
+
 int main(void)
 {
     printf("Booting Zephyr!\n");
