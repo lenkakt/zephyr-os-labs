@@ -113,5 +113,6 @@ The problem is that the userspace consumer cannot access the kernel object - the
 Someone must grant access to the pipe.
 Update your code - the main thread shall grant access to lab_pipe to the consumer thread before this one is started.
 
-
+** Warning: This lab has updated solutions, in Zephyr 4.2 or newer the pipe API is different. Do
+not use CONFIG_PIPES and check the solutions, if you still have older version of this lab at your computer.** 
 
