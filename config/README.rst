@@ -42,7 +42,7 @@ Build the example as it is to be sure it is working:
 
 .. code-block:: shell
 
-    west build -t qemu_x86 -t run
+    west build -b qemu_x86 -t run
 
 We will play with these options: 
 
