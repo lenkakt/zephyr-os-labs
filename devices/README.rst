@@ -105,5 +105,125 @@ So you see the output in shell now? If yes, you are done with this task.
 
 
 ===================
-TASK1.2 Device Tree
+TASK2 Device trees
 ===================
+
+The device tree is a data structure  that describes the hardware components of a system.
+It is used by the Zephyr operating system to understand the hardware it is running on. And it is the key 
+part of the Zephyr OS device model. It helps to abstract the hardware details from the software, 
+making it easier to write portable code.
+
+To understand device trees, start with the documentation as usual: https://docs.zephyrproject.org/latest/guides/dts/index.html 
+The documentation is quite extensive, so focus on the introduction and basic concepts.
+
+-------------------------------
+TASK2.1: Exploring device tree
+-------------------------------
+
+In this task, you will explore the device tree of your Zephyr OS application.
+You can find the device tree files in the build/zephyr/zephyr.dts file after you build the - it can be just the initial
+"hello world" application.
+
+Your task is to find the following information in the device tree:
+1. The CPU architecture and model.
+2. The memory layout (RAM and Flash).
+3. The UART device used for the console.
+4. Any GPIO devices present.
+5. The interrupt controller used.
+6. Any timers present.
+
+The device tree is just a text file, so you can read it in any text editor.
+As you see, the main device tree file is created from different sources, so in the final file you get also 
+links to the original files.
+
+----------------------------------------------
+TASK2.2: Browsing the device tree in the shell
+----------------------------------------------  
+
+In the configuration, switch on the shell and add the device shell using:
+
+.. code-block:: config
+
+    CONFIG_SHELL=y
+    CONFIG_SHELL_BACKEND_SERIAL=y
+    CONFIG_DEVICE_SHELL=y
+    CONFIG_UART_CONSOLE=y
+
+Rebuild and run the application. Test the device command and check the outputs. 
+
+-----------------------------------------------
+TASK2.3: Modyfying the device tree
+-----------------------------------------------
+
+We will now add a "dummy" device to the device tree and add it to the main device tree using an overlay file.
+First, create a new subdrectory called "boards" inside the "devices" directory.
+
+Then create a device tree fragment that we want to add to the main device tree. To inform the build
+system that we want to add this to main device tree. we need to name it after a board and add the 
+"overlay" suffix. So, when working with the qemu_cortex_m0 board, we need to create a f
+ile called "qemu_cortex_m0.overlay" inside the "boards" directory.
+
+Define a "dummy" device here: 
+
+.. code-block:: dts
+/ {
+  dummy0: dummy {
+    compatible = "tul,dummy";
+    foo = <1234>;
+    status = "okay";
+    label = "DUMMY0";
+  };
+};
+
+As a next step, we need to create a binding for our dummy device. It will be stored in the "dts/bindings/misc" 
+directory in the file with the same name as the compatible string: "tul,dummy.yaml".
+
+It shall contain the definition of the properties we used in the device tree fragment:
+
+.. code-block:: yaml
+# dts/bindings/misc/tul,dummy.yaml
+compatible: "tul,dummy"
+description: Minimal dummy device for demo
+properties:
+  foo:
+    type: int
+    required: true
+  label:
+    type: string
+    required: false
+
+The last thing we need to add is the definition of our "vendor" the tul (we used this, because the labs were created 
+at Technical University of Liberec).
+
+In the "dts/bindings" create a file called vendor-prefixes.txt with following content:
+
+.. code-block:: text
+tul  Technical University of Liberec
+
+Compile and run the application. If you test the main device tree, you shall see your dummy device at the end.
+But if you list the devices using the shell command, you will not see it there. Why? The driver 
+which initializes the device is missing.
+
+In the solutions, you can check all the files (you have there boards directory and the dts directory as well).
+
+-------------------------------------------
+TASK2.4: Adding the device driver
+-------------------------------------------
+To see the device listed in the shell, we must create a driver for it. The driver is a simple C file
+that initializes the device and registers it with the device model.
+
+Create a new source file called "tul_dummy.c" in the "src" directory. You have an inspiration in the 
+solutions directory. Do not forget to list the new source file in the CMakeLists.txt:
+
+.. code-block:: cmake
+target_sources(app PRIVATE 
+    src/main.c
+    src/tul_dummy.c)        
+
+The driver turns a Devicetree node (compatible = "tul,dummy") into a runtime device by defining 
+a small config struct, an init() function, and then instantiating it with DEVICE_DT_DEFINE/DEVICE_DT_INST_DEFINE.
+
+At build time, DT macros (e.g., DT_PROP, DT_INST(...)) pull properties like foo from
+ the node, and Zephyr’s init system calls your init() so the device becomes READY and shows up in device list.
+
+ When you finish, rebuild and run the application. Now you should see your dummy device in the device list.

@@ -1,0 +1,10 @@
+# dts/bindings/misc/tul,dummy.yaml
+compatible: "tul,dummy"
+description: Minimal dummy device for demo
+properties:
+  foo:
+    type: int
+    required: true
+  label:
+    type: string
+    required: false
