@@ -3,7 +3,7 @@
 In this section, we will focus on all possible parameterizations and configurations that affect the final behaviour of your system.
 
 These are:
-You set the resulting system's source code composition and properties with parameters in prj.conf file using the KConfig syntax.
+You set the resulting system's source code composition and properties with parameters in prj.conf file using the Kconfig syntax.
 
 You set how the system is compiled and assembled from the sub-applications in CMakeLists.txt.
 
@@ -11,29 +11,28 @@ Environment variables also affect the compiler's and other tools' behaviour and 
 
 We compose the whole project from different sub-repositories of code using so-called manifests written in YAML.
 
-This exercise focuses on KConfig (TASK1), CMakeLists.txt (TASK2), and environment variables (TASK3); we'll cover manifests in another section.
+This exercise focuses on Kconfig (TASK1), CMakeLists.txt (TASK2), and environment variables (TASK3); we'll cover manifests in another section.
 
-## TASK1: prj.conf and KConfig
+## TASK1: prj.conf and Kconfig
 
-Main goal: To understand how the system configuration works, KConfig and the proper way to set your OS configuration.
+Main goal: To understand how the system configuration works, Kconfig and the proper way to set your OS configuration.
 
-The configuration options are macros used in the source code. However, they are not defined here - the generating header file is composed only during compilation from the configuration files. It is called autoconf.h and can be found after successful compilation in zephyr-os-labs/zephyr/build/zephyr/include/generated/autoconf.h
+The configuration options are macros used in the source code. However, they are not defined here - the generating header file is composed only during compilation from the configuration files. It is called autoconf.h and can be found after successful compilation in zephyr-os-labs/build/zephyr/include/generated/autoconf.h
 
 The good point to start is always the documentation, so read the initial description at <https://docs.zephyrproject.org/latest/build/kconfig/index.html>.
 
 ### Before you start
 
-Do not forget to activate the environment to get the West working properly.
+Make sure you're in the `zephyr-os-labs` directory with the virtual environment activated.
+
+Build the example as it is, from scratch (`-p always`, "pristine" - throws
+away any previous build output and reconfigures everything; you'll want
+this every time you change boards or Kconfig fragments in this lab, since
+otherwise west can silently keep using stale, cached configuration), to be
+sure it is working:
 
 ```shell
-cd zephyr-os-labs
-source .venv/bin/activate
-```
-
-Build the example as it is to be sure it is working:
-
-```shell
-west build -b qemu_x86 -t run
+west build -p always -b qemu_x86 config/ -t run
 ```
 
 We will play with these options:
@@ -50,12 +49,15 @@ A good idea is to read the documentation related to these options.
 
 You can manually write the options into prj.conf.
 In the first line, you see the CONFIG_BOOT_DELAY. To get it working, delete the # sign.
-Try to set up correctly the boot message - see the options documentation linked in TASK1 description.
+
+CONFIG_BOOT_BANNER and CONFIG_BOOT_BANNER_STRING aren't in prj.conf yet -
+add both lines yourself to set up the boot message (see the options
+documentation linked in TASK1 description for the exact syntax).
 
 To compile and run the emulator, use:
 
 ```shell
-west build -b qemu_x86 -t run
+west build -b qemu_x86 config/ -t run
 ```
 
 If you boot successfully, try to play with switching the message on and off.
@@ -63,22 +65,22 @@ Now is a perfect time to write any nonsense to prj.conf to find out what will ha
 
 No success? Try the file solutions/task1_1.prj.conf.
 
-### TASK1.2: menuconfig, guiconfig and KConfig
+### TASK1.2: menuconfig, guiconfig and Kconfig
 
 There are many configuration options, and they depend on each other. Writing a configuration from scratch in a file and considering all the dependencies is challenging; no one asks you to do it!
 
 The right way is to use ready-made tools that group the options into graphical menus. You have two options: if a GUI is available during development, you can use the GUI tool (guiconfig) or the text menus available on the command line (menuconfig).
 
-We use the KConfig language to set up the menu's structure. You can find KConfig files in the sources defining the menu structure and options description—the online documentation generated from these files (e.g. here: <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>).
-All the options used in this lab are described in the zephyr-os-labs/zephyr/kernel/KConfig file.
+We use the Kconfig language to set up the menu's structure. You can find Kconfig files in the sources defining the menu structure and options description—the online documentation generated from these files (e.g. here: <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>).
+All the options used in this lab are described in the zephyr-os-labs/zephyr/kernel/Kconfig file.
 
 1. Comment out your settings in prj.conf.
 
 2. Start one of the interfaces and set your menu options. Save them. The entire configuration is now saved in zephyr-os-labs/build/zephyr/config.
 
-To start the menuconfig use: `west build -b qemu_x86 -t menuconfig`
+To start the menuconfig use: `west build -b qemu_x86 config/ -t menuconfig`
 
-To start the guiconfig use: `west build -b qemu_x86 -t menuconfig`
+To start the guiconfig use: `west build -b qemu_x86 config/ -t guiconfig`
 
 3. When you finish the settings, save your changes and quit the menu.
 

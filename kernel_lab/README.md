@@ -8,15 +8,9 @@
 
 ## Before you start
 
-1. Unless otherwise specified, it is assumed that you enter commands in the zephyr-os-labs directory.
-2. Do not forget to activate the environment using command:
+Make sure you're in the `zephyr-os-labs` directory with the virtual environment activated.
 
-```shell
-cd zephyr-os-labs
-source .venv/bin/activate
-```
-
-3. Build the example as it is to be sure it is working:
+Build the example as it is to be sure it is working:
 
 ```shell
 west build -b qemu_cortex_m0 -t run ./kernel-lab
