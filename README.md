@@ -13,11 +13,11 @@ The practical labs cover the following topics:
 6. [Synchro](synchro/) - Job synchronization - locks, semaphores, atomic operations
 7. [Memory](memory/) - Memory management, assignment and protection
 8. [Devices](devices/) - Device management - device trees, modifying them, device controller
-9. [Filesystems](filesystems/) - Working with file systems.
+9. [Filesystems](filesystems/) - Working with file systems
 
 ## Target boards
 
-The first release is tested on qemu_x86 and qemu_cortex_m0 and qemu_cortex_rt (user-space).
+The first release is tested on qemu_x86, qemu_cortex_m0, and qemu_cortex_rt (user-space).
 
 ## Running in the cloud
 
@@ -39,7 +39,7 @@ part of the workflow stays local, over USB.
 
 ## Target audience
 
-Our primary target audience are students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++.
+Our primary target audience is students of Computer Science in the 2nd year of university study; we assume basic knowledge of the Linux OS environment and command line, as well as basic knowledge of C and C++.
 
 ## Host operating systems
 
@@ -54,7 +54,7 @@ Each lab has its own directory. The lab directory contains a README file with th
 Each lab contains a "solutions" directory with the solution to the given lab.
 The solution can be a proposed main.c or a configuration file or both.
 
-The filenames are using following patterns:
+The filenames use the following patterns:
 
 - Kconfig_X.Y - the configuration file for the given task. It shall be renamed to Kconfig and moved to the lab directory.
 
