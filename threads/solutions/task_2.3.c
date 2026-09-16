@@ -34,29 +34,28 @@ K_PIPE_DEFINE(lab_pipe, PIPE_SIZE, 4);
 //The producer function: it writes a message to the pipe
 
 void producer_thread_fcn(void *p1, void *p2, void *p3) {
-	
+
 	unsigned char *data;
 	size_t total_size;
-	size_t bytes_written;
-	int return_value;
+	int bytes_written;
 
 
 	printf("Producer is starting.\n");
-	
+
 	//Prepare the message:
 	data = (unsigned char *) PIPE_MESSAGE;
 	total_size=sizeof(PIPE_MESSAGE);
-	
+
 	printf("Producer: Sending %s.\n", data);
 	printf("Producer: Sending %d bytes.\n", total_size);
 
-	return_value = k_pipe_put(&lab_pipe, data, total_size, &bytes_written, 1, K_NO_WAIT);
-		
-	if (return_value != 0) {
+	bytes_written = k_pipe_write(&lab_pipe, data, total_size, K_NO_WAIT);
+
+	if (bytes_written < 0) {
 		printf("Producer: Error writing to the pipe.\n");
 		return;
 	}
-	else if (bytes_written != total_size) {
+	else if ((size_t) bytes_written != total_size) {
 		printf("Producer: Not all data sent!\n");
 		return;
 	}
@@ -74,12 +73,11 @@ void consumer_thread_fcn(void *p1, void *p2, void *p3) {
 	#endif
 	
 	unsigned char buffer[100];
-	size_t bytes_read;
-	int return_value;	
+	int bytes_read;
 
 	printf("Consumer is starting.\n");
-	return_value = k_pipe_get(&lab_pipe, buffer, sizeof(buffer), &bytes_read, 1, K_NO_WAIT);
-	if (return_value != 0) {
+	bytes_read = k_pipe_read(&lab_pipe, buffer, sizeof(buffer), K_NO_WAIT);
+	if (bytes_read < 0) {
 		printf("Consumer: Error reading from the pipe.\n");
 		return;
 	}
