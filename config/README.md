@@ -154,3 +154,19 @@ west build -p always config/ -t run
 ```
 
 Note: the -p always here is essential, you need to rebuild everything because you have changed the target board.
+
+Check which board the build actually used. Did the BOARD environment variable
+win over the `set(BOARD qemu_x86)` still sitting in CMakeLists.txt from TASK2.2,
+or did CMakeLists.txt win instead? Either result teaches you something about
+where CMake variables come from - try to explain what you observed.
+
+## Putting it all together
+
+You've now set the same kind of option (which board to build for, or what
+the boot banner says) through four different mechanisms: editing prj.conf
+directly, using menuconfig/guiconfig, a CMakeLists.txt `set()`, and a
+command-line `-D` or environment variable. They don't all win equally - each
+task asked you to check which one overrides which. Based on what you
+observed, try to write down the full priority order, from the setting that
+gets overridden most easily to the one that wins no matter what else is
+configured.
