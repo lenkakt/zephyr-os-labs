@@ -29,9 +29,13 @@ RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
 USER ubuntu
 WORKDIR /home/ubuntu
 
-# An isolated Python environment for west and Zephyr's own Python deps.
-RUN python3 -m venv /home/ubuntu/.venv
-ENV PATH="/home/ubuntu/.venv/bin:${PATH}"
+# An isolated Python environment for west and Zephyr's own Python deps, at
+# ~/zephyrproject/.venv - the same path the Zephyr Getting Started guide and
+# this repo's own lab READMEs already use, so the documented `source
+# ~/zephyrproject/.venv/bin/activate` step works unchanged in Codespaces too
+# (even though it's a no-op there, since PATH already includes it below).
+RUN mkdir -p /home/ubuntu/zephyrproject && python3 -m venv /home/ubuntu/zephyrproject/.venv
+ENV PATH="/home/ubuntu/zephyrproject/.venv/bin:${PATH}"
 RUN pip install --no-cache-dir west
 
 # --- A ready-to-build Zephyr workspace, baked into the image ---
