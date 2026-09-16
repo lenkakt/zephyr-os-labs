@@ -1,0 +1,23 @@
+{
+	"name": "zephyr-os-labs",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "ubuntu",
+
+	// Keeps everyone comfortably inside GitHub Codespaces' monthly free
+	// quota - a bigger machine burns core-hours faster for the same wall
+	// time.
+	"hostRequirements": {
+		"cpus": 2
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cmake-tools"
+			]
+		}
+	}
+}

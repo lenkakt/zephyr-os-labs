@@ -1,6 +1,4 @@
-**********************************
-The application directory template
-**********************************
+# The application directory template
 
 This is a void application, used to create the other apps. It cotnains only the necessary files: the sample.yaml, CMakeLists.txt, src/main.c and this README.
 To set up a file structure for another app:
@@ -9,24 +7,18 @@ To set up a file structure for another app:
 3. Update sample.yaml as you need.
 4. Update this Readme to describe the app (update before you start in next paragraph - add link to app directory to last command).
 
-
-
-================
-Before you start
-================
+## Before you start
 
 1. Unless otherwise specified, it is assumed that you enter commands in the zephyr-os-labs directory.
-2. Do not forget to activate the environment using command: 
+2. Do not forget to activate the environment using command:
 
-.. code-block:: shell
-
-    cd zephyr-os-labs
-    source .venv/bin/activate
+```shell
+cd zephyr-os-labs
+source .venv/bin/activate
+```
 
 3. Build the example, clean all the old stuff and ensure that it is working:
 
-.. code-block:: shell
-
-    west build -p always -b qemu_cortex_m0 -t run ./my-app
-
-
+```shell
+west build -p always -b qemu_cortex_m0 -t run ./my-app
+```
