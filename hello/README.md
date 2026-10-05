@@ -53,7 +53,7 @@ just reflects whichever Zephyr release you have installed):
 SeaBIOS (version ...)
 Booting from ROM..
 *** Booting Zephyr OS build v4.2.0 ***
-Hello world!
+Hello World!
 ```
 
 If you want, you can repeat it for the other machine (qemu_cortex_m0) - just call the build command with `-b qemu_cortex_m0`. The qemu output shall be
