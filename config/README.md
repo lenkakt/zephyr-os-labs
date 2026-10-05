@@ -37,11 +37,11 @@ west build -p always -b qemu_x86 config/ -t run
 
 We will play with these options:
 
-1. CONFIG_BOOT_DELAY <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_DELAY.html#std-kconfig-CONFIG_BOOT_DELAY>
+1. CONFIG_BOOT_DELAY <https://docs.zephyrproject.org/latest/kconfig.html#CONFIG_BOOT_DELAY>
 
-2. CONFIG_BOOT_BANNER <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>
+2. CONFIG_BOOT_BANNER <https://docs.zephyrproject.org/latest/kconfig.html#CONFIG_BOOT_BANNER>
 
-3. CONFIG_BOOT_BANNER_STRING
+3. CONFIG_BOOT_BANNER_STRING <https://docs.zephyrproject.org/latest/kconfig.html#CONFIG_BOOT_BANNER_STRING>
 
 A good idea is to read the documentation related to these options.
 
@@ -71,7 +71,7 @@ There are many configuration options, and they depend on each other. Writing a c
 
 The right way is to use ready-made tools that group the options into graphical menus. You have two options: if a GUI is available during development, you can use the GUI tool (guiconfig) or the text menus available on the command line (menuconfig).
 
-We use the Kconfig language to set up the menu's structure. You can find Kconfig files in the sources defining the menu structure and options description—the online documentation generated from these files (e.g. here: <https://docs.zephyrproject.org/2.7.5/reference/kconfig/CONFIG_BOOT_BANNER.html#std-kconfig-CONFIG_BOOT_BANNER>).
+We use the Kconfig language to set up the menu's structure. You can find Kconfig files in the sources defining the menu structure and options description—the online documentation generated from these files (e.g. here: <https://docs.zephyrproject.org/latest/kconfig.html#CONFIG_BOOT_BANNER>).
 All the options used in this lab are described in the zephyr-os-labs/zephyr/kernel/Kconfig file.
 
 1. Comment out your settings in prj.conf.
