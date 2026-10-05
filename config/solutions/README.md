@@ -47,7 +47,7 @@ Tested with Zephyr 4.4 (weakest first):
 | environment variable `BOARD` | `build.board`, `set()` |
 | `-b` or `-- -DBOARD=...` on the command line | everything |
 
-Watch out: if `west config -l` shows a `build.board` line (e.g. left there from the
+Watch out: if `west config -l` shows a `build.board` line (e.g. left there 
 from building some other application), the `set(BOARD)` in `CMakeLists.txt` is silently ignored.
 Remove it with `west config -d build.board`.
 
