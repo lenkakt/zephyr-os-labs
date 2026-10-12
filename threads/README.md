@@ -27,6 +27,8 @@ Start with the Thread description in [Threads documentation.](https://docs.zephy
 Write code that has just one thread created using the K_THREAD_DEFINE macro.
 This thread displays a message such as "Hello from my thread". Then, it sleeps for the given interval in ms (use the k_sleep function from the API and the K_MSEC macro).
 
+Note on priorities: a lower number means a higher priority. Threads with a non-negative priority (such as 5 in the solutions) are preemptive - the scheduler may switch them out at any time for a thread with a higher priority. Threads with a negative priority (such as -1 in the solutions of TASK1.4 and TASK2) are cooperative - they run until they give up the processor themselves, e.g. by calling k_sleep or by waiting for a kernel object. See [Scheduling](https://docs.zephyrproject.org/latest/kernel/services/scheduling/index.html) in the Zephyr documentation.
+
 If you do not know how to start, look at the [thread example](zephyr/samples/basic/threads) in the samples directory.
 If you need help, look for inspiration in the solutions directory of this lab.
 
@@ -59,6 +61,12 @@ older Zephyr version and will not work with the Zephyr version used here.
 ## TASK2: Userspace threads
 
 Start with the User mode description in [Zephyr online documentation.](https://docs.zephyrproject.org/latest/kernel/usermode/index.html)
+
+Note: a Zephyr *userspace thread* is not a *user-level thread*.
+In general OS terminology, user-level threads are switched by a library and the kernel does not know about them.
+In Zephyr, all threads - kernel-space and userspace - are created and scheduled by the kernel.
+The `K_USER` flag only makes the thread run in the unprivileged mode of the processor:
+it can access only its own memory and the kernel objects it was granted.
 
 ### TASK2.1: Userspace threads depend on MPU (MMU) support
 

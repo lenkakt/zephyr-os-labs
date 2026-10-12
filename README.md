@@ -1,7 +1,7 @@
 # Zephyr OS Labs
 
 This repository contains Zephyr-based lab exercises for the standard university Operating Systems course. The main goal is to use Zephyr as an example OS to practice the basics of operating systems theory.
-Each lab takes approx. 90 minutes. The lecture should start with a short introduction to the topic given by the lecturer. Only the labs are presented here; the intros are now in TBD mode.
+Each lab takes approx. 90 minutes. Each lab should start with a short introduction to the topic given by the lecturer. Only the labs are presented here; the intros are now in TBD mode.
 
 The practical labs cover the following topics:
 

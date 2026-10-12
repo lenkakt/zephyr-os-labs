@@ -42,7 +42,7 @@ With the timer application (TASK3.1) the kernel grows to 5 100 B (30 %) and `mai
 * Calling a kernel function is an **ordinary function call** - no system call, no switch of the
   processor mode. The application runs in the same address space and the same privileged mode
   as the kernel, so a bug in the application can overwrite the kernel data.
-  This is the "small kernel ≠ microkernel" point from the lecture: architecturally it is closer
+  This is why a small kernel is not the same as a microkernel: architecturally it is closer
   to a monolithic kernel. (Zephyr can run threads in user mode - see the Threads lab - but it
   is optional and needs MPU/MMU.)
 

@@ -56,8 +56,8 @@ The build system tells you which inputs it used - you just have to read its outp
    ```
 
 2. Open the board defconfig file (the path is in the `Loaded configuration` line).
-   Which options does the board itself set? Do you recognize any of them from the lectures
-   (hint: the scheduler)?
+   Which options does the board itself set? Which of them configure the kernel
+   (hint: look for the scheduler)?
 3. Build the application for `qemu_cortex_m0` and compare: which files are loaded now?
 
    ```shell
