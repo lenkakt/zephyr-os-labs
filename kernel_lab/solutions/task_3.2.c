@@ -14,7 +14,7 @@ int kl_calls = 0;
 void kl_work_handler(struct k_work *work)
 {
 	kl_calls++;
-	printf("Hallo from kernel timer! Iteration nr. %d.\n", kl_calls);
+	printf("Hello from kernel timer! Iteration nr. %d.\n", kl_calls);
 }
 
 

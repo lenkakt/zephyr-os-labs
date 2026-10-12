@@ -17,8 +17,8 @@
 #define TL1_SLEEP_MSEC 500
 #define TL2_SLEEP_MSEC 777
 
-#define TL1_MESSAGE "1: I am the first thread!\n"
-#define TL2_MESSAGE "2: I am the second thread!\n"
+#define TL1_MESSAGE "1: I am the first thread!"
+#define TL2_MESSAGE "2: I am the second thread!"
 
 
 

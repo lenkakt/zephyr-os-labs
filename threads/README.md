@@ -4,7 +4,8 @@
 
 1. To create and run your own threads using the K_THREAD_DEFINE macro.
 2. To let threads communicate with each other using a pipe.
-3. To understand Zephyr's userspace threads and why they need explicit permission to access kernel objects.
+3. To wait for a thread to finish using `k_thread_join`.
+4. To understand Zephyr's userspace threads and why they need explicit permission to access kernel objects.
 
 ## Before you start
 
@@ -35,7 +36,7 @@ This thread displays a message such as "Hello from my thread". Then, it sleeps f
 
 Note on priorities: a lower number means a higher priority. Threads with a non-negative priority (such as 5 in the solutions) are preemptive - the scheduler may switch them out at any time for a thread with a higher priority. Threads with a negative priority (such as -1 in the solutions of TASK1.4, TASK1.5 and TASK2) are cooperative - they run until they give up the processor themselves, e.g. by calling k_sleep or by waiting for a kernel object. See [Scheduling](https://docs.zephyrproject.org/latest/kernel/services/scheduling/index.html) in the Zephyr documentation.
 
-If you do not know how to start, look at the [thread example](zephyr/samples/basic/threads) in the samples directory.
+If you do not know how to start, look at the [threads sample](https://github.com/zephyrproject-rtos/zephyr/tree/main/samples/basic/threads) in the Zephyr repository.
 If you need help, look for inspiration in the solutions directory of this lab.
 
 ### TASK1.2: Threads working in parallel
@@ -83,6 +84,9 @@ Update your code from TASK1.4:
 
 Start with the User mode description in [Zephyr online documentation.](https://docs.zephyrproject.org/latest/kernel/usermode/index.html)
 
+Zephyr has no processes. All threads and the kernel share one address space, so by default any thread can read and overwrite the memory of any other thread or of the kernel itself.
+Userspace threads make it possible to isolate a thread from the rest of the system.
+
 Note: a Zephyr *userspace thread* is not a *user-level thread*.
 In general OS terminology, user-level threads are switched by a library and the kernel does not know about them.
 In Zephyr, all threads - kernel-space and userspace - are created and scheduled by the kernel.
@@ -95,11 +99,11 @@ The userspace threads can run only on systems with an MPU (Memory Protection Uni
 
 The board used in the previous example has no MPU, so we will use the qemu_cortex_r5 board in this lab.
 
-In the [samples directory](zephyr/samples/userspace), you can find four elementary examples demonstrating the userspace threads.
+In the [userspace samples](https://github.com/zephyrproject-rtos/zephyr/tree/main/samples/userspace) in the Zephyr repository, you can find several elementary examples demonstrating the userspace threads.
 
-To have userspace working, you need to enable CONFIG_USERSPACE. You also need to enable CONFIG_ASSERT to enable the system to check the permissions.
+To have userspace working, you need to enable CONFIG_USERSPACE. Enable also CONFIG_ASSERT, so that the `__ASSERT` checks in the code (for example, whether a thread really runs in user mode) are evaluated.
 
-To test your configuration, move the main.c from the [hello-world sample](zephyr/samples/userspace/hello_world_user) to your local main.c.
+To test your configuration, move the main.c from the [hello_world_user sample](https://github.com/zephyrproject-rtos/zephyr/tree/main/samples/userspace/hello_world_user) to your local main.c.
 
 Compile it for qemu_cortex_r5 and run:
 
@@ -113,14 +117,29 @@ Try to do the same for qemu_cortex_m0:
 west build -p always -b qemu_cortex_m0 -t run threads
 ```
 
-You shall see the ASSERT message informing you that this board does not support userspace.
-Switch off the CONFIG_ASSERT in your configuration and run the example at cortex_m0 again. See? It looks like userspace is working, but in fact... no! Take care in your applications.
+The build fails. First, the configuration step prints a warning:
+
+```
+warning: USERSPACE (defined at arch/Kconfig:322) was assigned the value 'y' but got the value 'n'.
+```
+
+The board has no MPU, so the build system silently switched CONFIG_USERSPACE off. Then the compiler stops at the line `#error This sample requires CONFIG_USERSPACE.` in the sample code. Always read the warnings of the configuration step - your prj.conf is not always what you get.
 
 ### TASK2.2: Your first userspace thread
 
 Based on experience from the samples, write your first code spawning the two threads, one working in userspace and the other in kernel space.
 Both threads shall display a message and return.
 In case of trouble, see the example solution in the solutions directory. Try to find a difference between the kernel-space and userspace threads creation.
+
+In the userspace thread, check that it really runs in user mode: `__ASSERT(k_is_user_context(), "User mode is not available on this board!");`
+
+Now build your code for qemu_cortex_m0, which has no MPU. You get the same Kconfig warning as in TASK2.1, but this time the build succeeds, because your code does not check CONFIG_USERSPACE. When you run it, both threads print their messages and then the assertion fails with a message like this:
+
+```
+ASSERTION FAIL [k_is_user_context()] @ CMAKE_SOURCE_DIR/src/main.c:27
+```
+
+Switch off CONFIG_ASSERT and run it on qemu_cortex_m0 again. See? It looks like userspace is working, but in fact... no! The "userspace" thread runs in kernel mode without any protection. Take care in your applications.
 
 ### TASK2.3: Userspace threads and pipes
 

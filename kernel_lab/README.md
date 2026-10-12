@@ -10,7 +10,7 @@
 
 ## Before you start
 
-Make sure you're in the `zephyr-os-labs` directory with the virtual environment activated.
+Make sure you are in the `zephyr-os-labs` directory with the virtual environment activated.
 You should already know `prj.conf`, menuconfig and the files `.config` and `autoconf.h`
 from the Config lab.
 
