@@ -12,8 +12,6 @@
 
 #define THREAD_STACKSIZE 1024
 
-#define MAIN_SLEEP 5000 // Consumer shall start when all data are sent
-
 #define PIPE_SIZE 100
 #define PIPE_MESSAGE "Producer: Hello"
 
@@ -104,7 +102,7 @@ int main(void) {
 			producer_thread_fcn, NULL, NULL, NULL,
 			-1, K_INHERIT_PERMS, K_NO_WAIT);
 
-	k_sleep(K_MSEC(MAIN_SLEEP)); //Sleep long enough to allow the producer to finish
+	k_thread_join(&producer_thread, K_FOREVER); //Wait until the producer has sent all data
 
 #ifdef USERMODE_ACTIVE
 	//Now grant the permissions to the consumer thread
@@ -123,5 +121,8 @@ int main(void) {
 			K_INHERIT_PERMS, 
 #endif
 	K_NO_WAIT);
+
+	k_thread_join(&consumer_thread, K_FOREVER);
+	printf("Main: Both threads finished.\n");
 	return 0;
 }
