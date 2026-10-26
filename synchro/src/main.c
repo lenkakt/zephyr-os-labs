@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014 Wind River Systems, Inc.
+ * Synchronization lab: a race condition on a shared bank account.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -7,53 +7,53 @@
 #include <stdio.h>
 #include <zephyr/kernel.h>
 
-// Define sleep times and other parameters
-#define APP_STACK_SIZE 500
-#define APP_PRIORITY 5
+#define SL_STACK_SIZE 1024
+#define SL_PRIORITY 5
 
-#define SLEEP_TIME1 2000
-#define SLEEP_TIME2 5000
-#define MUTEX_WAIT_TIME 500
+#define OPERATIONS 1000
+#define AMOUNT 100
 
-// Define a mutex
-K_MUTEX_DEFINE(lab_mutex);
+/* Set to 0 to let the threads run without being interrupted in the middle. */
+#define SIMULATE_INTERRUPT 1
 
-// Global variables
-uint32_t t1_sleep = SLEEP_TIME1;
-uint32_t t2_sleep = SLEEP_TIME2;
+/* The shared account: mother deposits money, daughter withdraws it. */
+long balance = 0;
 
-// A thread function: It checks if the Mutex is OK, and if it is, it prints a message and sleeps for a while.
-void lab_thread(void *thread_nr, uint32_t *sleep_time, void *unused)
+void change_balance(long amount)
 {
-    uint32_t thread_id = (uint32_t)thread_nr;    	
-    int mutex_status;
+	long current = balance;		/* 1. read the balance */
 
-    while (1) {
-		printf("This is thread nr. %d, Trying to get the mutex.\n", thread_id);
-        mutex_status = k_mutex_lock(&lab_mutex, K_FOREVER);
-        if (mutex_status == 0) {
-            printf("This is thread nr. %d, Mutex is mine now.\n", thread_id);
-            k_sleep(K_MSEC(*sleep_time));
-            k_mutex_unlock(&lab_mutex);
-        }
-        else {
-            printf("This is thread nr. %d, Mutex is busy\n", thread_id);
-        }
-        
-	k_sleep(K_MSEC(MUTEX_WAIT_TIME));
-}
+#if SIMULATE_INTERRUPT
+	k_yield();			/* the other thread may run here */
+#endif
+
+	balance = current + amount;	/* 2. write the new balance */
 }
 
+void mother(void *p1, void *p2, void *p3)
+{
+	for (int i = 0; i < OPERATIONS; i++) {
+		change_balance(AMOUNT);
+	}
+}
 
-   K_THREAD_DEFINE(lab_thread1, APP_STACK_SIZE, lab_thread, (void *)1, &t1_sleep, NULL, APP_PRIORITY, 0, 0);
-   K_THREAD_DEFINE(lab_thread2, APP_STACK_SIZE, lab_thread, (void *)2, &t2_sleep, NULL, APP_PRIORITY, 0, 0);
+void daughter(void *p1, void *p2, void *p3)
+{
+	for (int i = 0; i < OPERATIONS; i++) {
+		change_balance(-AMOUNT);
+	}
+}
 
+K_THREAD_DEFINE(mother_tid, SL_STACK_SIZE, mother, NULL, NULL, NULL, SL_PRIORITY, 0, 0);
+K_THREAD_DEFINE(daughter_tid, SL_STACK_SIZE, daughter, NULL, NULL, NULL, SL_PRIORITY, 0, 0);
 
 int main(void)
 {
-    printf("Booting Zephyr!\n");
-    printf("Creating threads and mutexes\n");
-    k_mutex_init(&lab_mutex);
+	k_thread_join(mother_tid, K_FOREVER);
+	k_thread_join(daughter_tid, K_FOREVER);
 
-    return 0;
+	printf("Mother deposited %d CZK, daughter withdrew %d CZK.\n",
+	       OPERATIONS * AMOUNT, OPERATIONS * AMOUNT);
+	printf("Balance: %ld CZK (expected 0 CZK)\n", balance);
+	return 0;
 }
