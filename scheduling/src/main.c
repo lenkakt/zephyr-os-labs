@@ -1,67 +1,119 @@
-/*
- * Copyright (c) 2012-2014 Wind River Systems, Inc.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #include <stdio.h>
+#include <string.h>
 #include <zephyr/kernel.h>
-#include <zephyr/random/random.h>
 
-/* Thread set parameters: */
-#define THREADS_NUMBER 25
-#define THREADS_LOW_PRIORITY 0
-#define THREADS_HIGH_PRIORITY 10
+#define STACK_SIZE 1024
+#define SLOT_MS 10
+#define SLOTS 150
 
+struct job {
+	char name;
+	int priority;    /* lower number = higher priority, negative = cooperative */
+	int arrival_ms;  /* when the job is ready to run */
+	int work_ms;     /* how much CPU time the job needs */
+	int deadline_ms; /* used only with CONFIG_SCHED_DEADLINE */
+};
 
-/* One thread parameters: */
-#define THREAD_STACKSIZE 1024
-#define THREAD_SLEEP 500
+/* Change this table in the tasks. */
+static struct job jobs[] = {
+	/* name, priority, arrival_ms, work_ms */
+	{ 'A', 5, 0, 300 },
+	{ 'B', 5, 0, 100 },
+	{ 'C', 5, 0, 50 },
+};
 
-K_THREAD_STACK_ARRAY_DEFINE(sl_stacks, THREADS_NUMBER, THREAD_STACKSIZE);
+#define JOBS ARRAY_SIZE(jobs)
 
-static struct k_thread sl_threads[THREADS_NUMBER];
+static char timeline[SLOTS + 1];
+static int finished_ms[JOBS];
+static int64_t start_ms;
+static uint32_t loops_per_ms;
 
-void sl_thread_entry_point(void* sl_thread_nr, void* sl_sleep) {
-	int* local_thread_nr = (int*)sl_thread_nr;
-	k_timeout_t* local_sleep = (k_timeout_t*)sl_sleep;
-	while (true) {
-		printf("I am the thread nr. %d with priority %d!\n", *local_thread_nr, k_thread_priority_get(k_current_get()));
-		k_sleep(*local_sleep);
+K_THREAD_STACK_ARRAY_DEFINE(stacks, JOBS, STACK_SIZE);
+static struct k_thread threads[JOBS];
+
+/* Keeps the CPU busy and writes who is running into the timeline. */
+static void burn_cpu(char name, uint32_t loops)
+{
+	for (volatile uint32_t i = 0; i < loops; i++) {
+		int slot = (k_uptime_get() - start_ms) / SLOT_MS;
+
+		if (slot < SLOTS) {
+			timeline[slot] = name;
+		}
 	}
 }
 
+/* k_busy_wait() is no good here: its time runs even when the thread is not running. */
+static void calibrate(void)
+{
+	uint32_t rounds = 0;
+
+	start_ms = k_uptime_get();
+	while (k_uptime_get() - start_ms < 100) {
+		burn_cpu('.', 100);
+		rounds++;
+	}
+	loops_per_ms = rounds;
+}
+
+static void job_thread(void *p1, void *p2, void *p3)
+{
+	struct job *job = p1;
+	int index = POINTER_TO_INT(p2);
+
+#ifdef CONFIG_SCHED_DEADLINE
+	k_thread_deadline_set(k_current_get(), k_ms_to_cyc_ceil32(job->deadline_ms));
+	k_yield();
+#endif
+	for (int ms = 0; ms < job->work_ms; ms++) {
+		burn_cpu(job->name, loops_per_ms);
+	}
+	finished_ms[index] = k_uptime_get() - start_ms;
+}
+
+static void print_results(void)
+{
+	int last = 0;
+	int sum = 0;
+
+	for (int i = 0; i < JOBS; i++) {
+		last = MAX(last, finished_ms[i]);
+	}
+	timeline[MIN(last / SLOT_MS + 1, SLOTS)] = '\0';
+
+	printf("\nOne character = %d ms, '.' = no job was running\n", SLOT_MS);
+	printf("0         100       200       300       400       500\n");
+	printf("%s\n\n", timeline);
+	printf("job  priority  arrival  work  finished  turnaround\n");
+	for (int i = 0; i < JOBS; i++) {
+		int turnaround = finished_ms[i] - jobs[i].arrival_ms;
+
+		printf("  %c  %8d  %7d  %4d  %8d  %10d\n", jobs[i].name, jobs[i].priority,
+		       jobs[i].arrival_ms, jobs[i].work_ms, finished_ms[i], turnaround);
+		sum += turnaround;
+	}
+	printf("average turnaround: %d ms\n", sum / (int)JOBS);
+}
 
 int main(void)
-{	
-	printf("Main is starting, creating the threads.");
+{
+	calibrate();
+	memset(timeline, '.', SLOTS);
 
-	int sl_threads_priorities[THREADS_NUMBER];
-	k_timeout_t sl_threads_sleeps[THREADS_NUMBER];
-
-	//Set the thread priorities:		
-	for (int i = 0; i < THREADS_NUMBER; i++) {		
-		sl_threads_priorities[i] = THREADS_LOW_PRIORITY + (sys_rand32_get() % (THREADS_HIGH_PRIORITY - THREADS_LOW_PRIORITY + 1));
+	/* All jobs are created first, so that none of them starts before the others exist. */
+	k_sched_lock();
+	start_ms = k_uptime_get();
+	for (int i = 0; i < JOBS; i++) {
+		k_thread_create(&threads[i], stacks[i], STACK_SIZE, job_thread, &jobs[i],
+				INT_TO_POINTER(i), NULL, jobs[i].priority, 0,
+				K_MSEC(jobs[i].arrival_ms));
 	}
-	//Set the thread sleeps:
-	for (int i = 0; i < THREADS_NUMBER; i++) {
-		sl_threads_sleeps[i] = K_MSEC(THREAD_SLEEP);
-	}
+	k_sched_unlock();
 
-	for (int i=0; i<THREADS_NUMBER; i++) {
-		
-		int* current_thread_id; k_timeout_t* current_thread_sleep;
-		*current_thread_id = i;
-		*current_thread_sleep = sl_threads_sleeps[i];
-		
-		k_tid_t thread_id = k_thread_create(&sl_threads[i], sl_stacks[i], THREAD_STACKSIZE, sl_thread_entry_point,
-                                            current_thread_id, current_thread_sleep, NULL, sl_threads_priorities[i], 0, K_NO_WAIT);
-        if (!thread_id) {
-            printf("Failed to create thread %d\n", i);
-            return -1;
-		}
+	for (int i = 0; i < JOBS; i++) {
+		k_thread_join(&threads[i], K_FOREVER);
 	}
-
- 
+	print_results();
 	return 0;
 }

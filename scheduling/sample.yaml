@@ -1,6 +1,6 @@
 sample:
   name: scheduling
-  description: Void "Hello world" just to keep the essential files and folders.
+  description: Shows how the scheduler divides the CPU between jobs, as a text timeline.
 tests:
   sample.app_directory:
     tags: kernel
