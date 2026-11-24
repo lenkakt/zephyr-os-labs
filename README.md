@@ -3,6 +3,8 @@
 This repository contains Zephyr-based lab exercises for the standard university Operating Systems course. The main goal is to use Zephyr as an example OS to practice the basics of operating systems theory.
 Each lab takes approx. 90 minutes. Each lab should start with a short introduction to the topic given by the lecturer. Only the labs are presented here; the intros are now in TBD mode.
 
+The labs have required parts and extensions. The required parts should fit into one teaching block of approx. 90 minutes. The extensions are for those who are interested in the topic and want to learn more, who have more time, or who study on their own.
+
 The practical labs cover the following topics:
 
 1. [Hello](hello/) - Installing and setting up all the environment
@@ -12,7 +14,7 @@ The practical labs cover the following topics:
 5. [Scheduling](scheduling/) - Working with scheduler - types of job scheduling, performance measurement
 6. [Synchro](synchro/) - Job synchronization - locks, semaphores, atomic operations
 7. [Memory](memory/) - Memory management, assignment and protection
-8. [Devices](devices/) - Device management - device trees, modifying them, device controller
+8. [Devices](devices/) - Device management - the device tree, using a driver, writing a simple driver
 9. [Filesystems](filesystems/) - Working with file systems
 
 ## Target boards

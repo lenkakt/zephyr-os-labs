@@ -6,7 +6,7 @@
 2. To allocate memory from the heap and see when the allocation fails.
 3. To see a memory leak and fragmentation.
 4. To measure how much stack a thread needs and what happens when it is too small.
-5. To see how the MPU stops a thread that writes where it must not, and how to give the thread access.
+5. To see how the MPU (Memory Protection Unit) stops a thread that writes where it must not, and how to give the thread access.
 6. To pass fixed-size memory blocks (slabs) between threads.
 
 ## Before you start
@@ -21,15 +21,12 @@ west build -p always -b qemu_cortex_m0 -t run memory
 
 ## Initial note
 
-All boards in this lab are emulated by QEMU, you do not need any hardware. Most tasks use `qemu_cortex_m0`. Two other boards are used where the default one is not enough:
-
-- `qemu_cortex_m3` in TASK1.2 and TASK3.1, to compare the results with another processor,
-- `mps2/an385` in TASK3.2 and TASK4, because it has an MPU (Memory Protection Unit) and supports user mode threads.
+All boards in this lab are emulated by QEMU, you do not need any hardware. Most tasks use `qemu_cortex_m0`. The board `qemu_cortex_r5`, which you know from the threads lab, is used in TASK4, because it has an MPU and supports user mode threads, and in TASK1.2 and TASK3.1 to compare the results with another processor.
 
 To use another board, change the `-b` parameter, for example:
 
 ```shell
-west build -p always -b mps2/an385 -t run memory
+west build -p always -b qemu_cortex_r5 -t run memory
 ```
 
 Always build with `-p always` when you change the board or the configuration.
@@ -42,9 +39,17 @@ The programs end, but QEMU keeps running. Press Ctrl+A, then X, to quit it.
 
 As in the previous labs, try to write the code yourself before you look at the solutions.
 
+## Required and extension tasks
+
+Required tasks should fit into the lab session. Extension tasks are for those who finish early, or for deeper understanding and exam preparation.
+
+Required: TASK1.1, TASK2.1, TASK2.2, TASK3.2, TASK4.1, TASK5.1.
+
+Extension: TASK1.2, TASK2.3, TASK3.1, TASK4.2, TASK5.2, TASK5.3.
+
 ## TASK1: Where does my program live?
 
-### TASK1.1: Addresses
+### TASK1.1: Addresses (required)
 
 Read `src/main.c`. It prints the addresses of a function, a constant, two global variables, a static local variable and a local variable. Build and run it.
 
@@ -63,19 +68,19 @@ The `qemu_cortex_m0` board has 256 KB of flash starting at address `0x00000000` 
 3. Where does the static local variable `counter` live: on the stack, or with the global variables?
 4. The local variable `local` is in RAM, too. Whose stack is it on?
 
-### TASK1.2: The same addresses every time
+### TASK1.2: The same addresses every time (extension)
 
 Run the program again. Are the addresses the same?
 
 There is no virtual memory on this board. The addresses you see are real physical addresses, and the linker decided them when you built the program. Nothing changes them when the program starts.
 
-Build the program for `qemu_cortex_m3` and compare the addresses with the ones from `qemu_cortex_m0`. Which of them changed and which stayed the same? Why?
+Build the program for `qemu_cortex_r5` and compare the addresses with the ones from `qemu_cortex_m0`. Where is the code now? Hint: look at the `FLASH` and `RAM` lines in the table at the end of the build.
 
 ## TASK2: The heap
 
 Zephyr can allocate memory while the program runs. The functions `k_malloc()` and `k_free()` work with the system heap. Read the documentation first: https://docs.zephyrproject.org/latest/kernel/memory_management/heap.html
 
-### TASK2.1: Allocating and freeing
+### TASK2.1: Allocating and freeing (required)
 
 Write a program that allocates a block of 512 bytes with `k_malloc()`, prints its address and frees it with `k_free()`. Repeat it ten times in a loop.
 
@@ -112,7 +117,7 @@ CONFIG_HEAP_MEM_POOL_SIZE=4096
 
 Build and run the program again. What address do the blocks get?
 
-### TASK2.2: A memory leak
+### TASK2.2: A memory leak (required)
 
 Remove `k_free()` from your program and run it again.
 
@@ -120,7 +125,7 @@ Remove `k_free()` from your program and run it again.
 2. 4096 / 512 = 8. Why did you get fewer? Look at the addresses: how far apart are two blocks?
 3. What does `k_malloc()` return when there is no memory left? Does your program check it?
 
-### TASK2.3: Fragmentation
+### TASK2.3: Fragmentation (extension)
 
 Write a program that:
 
@@ -178,7 +183,7 @@ How many bytes are free after step 2? Why does the allocation in step 3 fail, an
 
 Every thread has its own stack, and in Zephyr you choose its size yourself, when you build the program. Too much wastes RAM, too little breaks the program.
 
-### TASK3.1: How much stack does a thread use?
+### TASK3.1: How much stack does a thread use? (extension)
 
 Create two threads with 1024 bytes of stack each. The first thread does nothing, the second one prints a line with `printf()` and two numbers.
 
@@ -235,9 +240,9 @@ CONFIG_THREAD_STACK_INFO=y
 
 1. How much stack does an empty thread need? What is in it?
 2. How much more does one `printf()` take?
-3. Build the program for `qemu_cortex_m3` and compare. Is the result the same?
+3. Build the program for `qemu_cortex_r5` and compare. Is the result the same?
 
-### TASK3.2: Too small a stack
+### TASK3.2: Too small a stack (required)
 
 Create a thread with 1024 bytes of stack. In the thread, create a local array and fill it with `memset()`. Replace the content of `src/main.c` with this program:
 
@@ -270,27 +275,23 @@ int main(void)
 }
 ```
 
-Build the program for `mps2/an385` with the hardware stack protection. Add to `memory/prj.conf`:
-
-```
-CONFIG_HW_STACK_PROTECTION=y
-```
+Build and run the program for `qemu_cortex_m0`.
 
 1. Run the program with `BUFFER_SIZE` 800 and then 850. What happens? Why does 850 bytes not fit into a stack of 1024 bytes?
-2. The protection works like a guard: the MPU watches a small area just below the stack. Try `BUFFER_SIZE` 2000. What happens now, and why is it worse?
-3. Set `CONFIG_HW_STACK_PROTECTION=n` and try 850 and 1100 again. What does the program say now? Can you tell from the message what went wrong?
+2. Try `BUFFER_SIZE` 2000. Can you tell from the message what went wrong?
+3. This board has no MPU, so nothing watches the end of the stack. The thread simply writes over the memory below its stack, and the program fails later, somewhere else. Why is such a bug hard to find?
 
 ## TASK4: Protection
 
 In Zephyr, a thread can run in user mode. The MPU then lets it access only its own stack and the memory it was explicitly given. Read the documentation: https://docs.zephyrproject.org/latest/kernel/usermode/memory_domain.html
 
-Use `mps2/an385` and add to `memory/prj.conf`:
+Use `qemu_cortex_r5` and add to `memory/prj.conf`:
 
 ```
 CONFIG_USERSPACE=y
 ```
 
-### TASK4.1: Writing where you must not
+### TASK4.1: Writing where you must not (required)
 
 Write a program with a global variable `secret`. The main thread sets it and prints it. Then it starts a user mode thread (the option `K_USER` in `k_thread_create()`), which tries to write to `secret`. The main thread waits for the user thread with `k_thread_join()`. Replace the content of `src/main.c` with this program:
 
@@ -322,10 +323,10 @@ int main(void)
 }
 ```
 
-1. What happens? Which address does the MPU report, and what is at this address?
+1. What happens? The processor reports a `DATA ABORT` with a `Permission Fault`. Which address does it report, and what is at this address?
 2. The whole system stops. Why is it better than letting the thread continue?
 
-### TASK4.2: Giving access
+### TASK4.2: Giving access (extension)
 
 Give the user thread access to `secret`. You need three things:
 
@@ -382,11 +383,11 @@ A slab is a pool of memory blocks of one fixed size. Allocating and freeing a bl
 1. To understand what a slab is, the English Wikipedia gives a quick summary: https://en.wikipedia.org/wiki/Slab_allocation
 2. Now, check the Zephyr implementation: https://docs.zephyrproject.org/latest/kernel/memory_management/slabs.html
 
-Go back to `qemu_cortex_m0`. Remove `CONFIG_HW_STACK_PROTECTION` and `CONFIG_USERSPACE` from `memory/prj.conf` first: this board has no MPU, and the build would only warn that it ignores them.
+Go back to `qemu_cortex_m0`. Remove `CONFIG_USERSPACE` from `memory/prj.conf` first: this board has no MPU, and the build would only warn that it ignores it.
 
 In this task, producers fill slab blocks with data and a consumer reads them. To pass a block from a producer to the consumer safely, use a message queue (`k_msgq`) that carries the pointer to the block. The consumer frees the block when it has read it.
 
-### TASK5.1: Just one block
+### TASK5.1: Just one block (required)
 
 1. Create a slab with one block of 32 bytes.
 2. Create a producer thread and use the main thread as the consumer.
@@ -436,7 +437,7 @@ int main(void)
 
 What does the producer do while the consumer still has the only block?
 
-### TASK5.2: More producers
+### TASK5.2: More producers (extension)
 
 1. Create a slab with four blocks.
 2. Create four producer threads and one consumer.
@@ -444,6 +445,6 @@ What does the producer do while the consumer still has the only block?
 
 In which order does the consumer get the data?
 
-### TASK5.3: Producers in an array
+### TASK5.3: Producers in an array (extension)
 
 Improve your solution from TASK5.2 to keep all the producers in an array. This way, you can change the number of producers by editing one parameter in your code. Hint: `K_THREAD_STACK_ARRAY_DEFINE`.

@@ -1,5 +1,5 @@
 /*
- * Memory lab, TASK4.1: a user thread writes to kernel data (mps2/an385).
+ * Memory lab, TASK4.1: a user thread writes to kernel data (qemu_cortex_r5).
  *
  * SPDX-License-Identifier: Apache-2.0
  */

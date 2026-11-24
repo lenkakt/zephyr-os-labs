@@ -2,6 +2,6 @@
 
 int main(void)
 {
-	printk("Where is your code?....\n");
-
+	printk("Hello from the devices lab!\n");
+	return 0;
 }

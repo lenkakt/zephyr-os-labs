@@ -1,10 +1,9 @@
-# dts/bindings/misc/tul,dummy.yaml
+description: Dummy device for the devices lab
+
 compatible: "tul,dummy"
-description: Minimal dummy device for demo
+
 properties:
   foo:
     type: int
     required: true
-  label:
-    type: string
-    required: false
+    description: A number the driver reads from the device tree

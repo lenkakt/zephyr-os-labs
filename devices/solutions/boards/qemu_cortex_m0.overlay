@@ -1,8 +1,7 @@
 / {
-  dummy0: dummy {
-    compatible = "tul,dummy";
-    foo = <1234>;
-    status = "okay";
-    label = "DUMMY0";
-  };
+	dummy0: dummy {
+		compatible = "tul,dummy";
+		foo = <1234>;
+		status = "okay";
+	};
 };

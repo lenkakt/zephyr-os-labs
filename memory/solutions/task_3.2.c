@@ -1,5 +1,5 @@
 /*
- * Memory lab, TASK3.2: a local array on a small stack (mps2/an385).
+ * Memory lab, TASK3.2: a local array on a small stack (qemu_cortex_m0).
  *
  * SPDX-License-Identifier: Apache-2.0
  */

@@ -1,5 +1,5 @@
 /*
- * Memory lab, TASK4.2: a memory domain gives the user thread access (mps2/an385).
+ * Memory lab, TASK4.2: a memory domain gives the user thread access (qemu_cortex_r5).
  *
  * SPDX-License-Identifier: Apache-2.0
  */
