@@ -59,13 +59,7 @@ The documentation of the device tree in Zephyr: https://docs.zephyrproject.org/l
 
 After every build, the complete device tree of the board is in the file `build/zephyr/zephyr.dts`. It is put together from several files: a file for the chip, a file for the board and, later in this lab, your own file.
 
-Build the example as in "Before you start", quit QEMU, and print the node of the first serial port:
-
-```shell
-grep -n -A8 "uart0: uart@" build/zephyr/zephyr.dts
-```
-
-You should see these lines (the line numbers may differ):
+Build the example as in "Before you start" and quit QEMU. Open the file `build/zephyr/zephyr.dts` in your editor and search for `uart0:`. This is the node of the first serial port. You should see these lines:
 
 ```
 uart0: uart@40002000 {
@@ -84,11 +78,7 @@ The comment at the end of each line tells you which file the property comes from
 4. The property `status` comes from the board file, not from the chip file. Why does the board decide whether the serial port is switched on? Hint: the chip has the serial port inside, but is it always connected to something on every board?
 5. `current-speed` is `0x1c200`. What speed is it in decimal?
 
-The device tree also says which serial port the board uses for the console. Print the node `chosen`:
-
-```shell
-grep -n -A8 "chosen {" build/zephyr/zephyr.dts
-```
+The device tree also says which serial port the board uses for the console. Search the same file for `chosen`.
 
 6. Find the line `zephyr,console`. Which node does the console use?
 
@@ -130,11 +120,7 @@ devices:
 
 `READY` means that the driver initialized the device successfully.
 
-Quit QEMU and count the nodes that are switched on in the device tree:
-
-```shell
-grep -c 'status = "okay"' build/zephyr/zephyr.dts
-```
+Quit QEMU, open `build/zephyr/zephyr.dts` again and search for `status = "okay"`. Your editor shows how many times it found the text: that is the number of nodes switched on in the device tree.
 
 1. The device tree has 24 nodes with `status = "okay"`, but the system created only three devices. Why? Hint: a node becomes a device only if there is a driver for it in the program. Which drivers did the configuration include?
 2. Find `uart0` in the list. How does the name `uart@40002000` relate to the node from TASK1?
@@ -241,13 +227,7 @@ The first part of `compatible` is the vendor. `tul` is not a known vendor (it st
 tul	Technical University of Liberec
 ```
 
-Build and run the program. Quit QEMU and check that your node is in the device tree:
-
-```shell
-grep -n -A4 "dummy0:" build/zephyr/zephyr.dts
-```
-
-You should see your node, with `foo = < 0x4d2 >;` (1234 in hexadecimal). Run the program again and type `device list`.
+Build and run the program. Quit QEMU, open `build/zephyr/zephyr.dts` and search for `dummy0:`. You should see your node at the end of the file, with `foo = < 0x4d2 >;` (1234 in hexadecimal). Run the program again and type `device list`.
 
 1. Is your device in the list? Why not? Hint: compare with question 1 of TASK2.
 
